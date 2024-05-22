@@ -18,3 +18,11 @@ colors = ["yellow", "red", "black"]
 
 #----------Constants----------
 NUMBER_OF_CARDS_IN_DECK = 30
+
+#----------Subprograms----------
+def load_authorized_players(file_path) -> list[str]:
+    with open("file_path", "r") as file:
+        return load(file)
+
+def check_players(player1_name, player2_name, authorized_players) -> bool:
+    return player1_name.upper() and player2_name.upper() in authorized_players

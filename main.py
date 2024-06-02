@@ -20,9 +20,22 @@ colors = ["yellow", "red", "black"]
 NUMBER_OF_CARDS_IN_DECK = 30
 
 #----------Subprograms----------
-def load_authorized_players(file_path) -> list[str]:
-    with open("file_path", "r") as file:
+def load_authorized_players(file_path: str) -> list[str]:
+    with open(file_path, "r") as file:
         return load(file)
 
 def check_players(player1_name, player2_name, authorized_players) -> bool:
     return player1_name.upper() and player2_name.upper() in authorized_players
+
+def create_deck(deck, number_of_cards) -> list[tuple[int, str]]:
+    existing_cards = set()
+    
+    while len(deck) < number_of_cards:
+        number = randint(1, 10)
+        color = choice(colors)
+        new_card = (number, color)
+        
+        if new_card not in existing_cards:
+            existing_cards.add(new_card)
+            deck.append(new_card)
+    return deck

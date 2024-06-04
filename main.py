@@ -48,7 +48,7 @@ def create_deck(deck, number_of_cards) -> deck:
     return deck
 
 
-def get_card_from_deck(deck, player1, player2) -> None:
+def get_cards_from_deck(deck, player1, player2) -> None:
     removed_card = deck.pop(0)
     player1["cards"].append(removed_card)
 
@@ -79,7 +79,21 @@ def give_winner_cards(winner, loser) -> None:
 
 
 def normal_game():
-    pass
+    player1_name = player_1["name"]
+    player2_name = player_2["name"]
+
+    load_authorized_players("Programmig-Project/main.py")
+    check_players(player1_name, player2_name)
+
+    create_deck(deck_of_cards, NUMBER_OF_CARDS_IN_DECK)
+    while len(deck) > 0:
+        get_cards_from_deck(deck_of_cards, player_1, player_2)
+        winner = calculate_winner(player_1, player_2)
+        # player1 is the loser only if player2 is the winner, otherwise player2 is the loser
+        give_winner_cards(winner, player_1 if winner == player_2 else player_2)
+    print(player_1)
+    print(player_2)
+
 
 
 def main():

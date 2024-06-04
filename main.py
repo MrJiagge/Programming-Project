@@ -28,9 +28,11 @@ NUMBER_OF_CARDS_IN_DECK = 30
 def load_authorized_players(file_path: str) -> list[str]:
     with open(file_path, "r") as file:
         return load(file)
+    
 
 def check_players(player1_name, player2_name, authorized_players) -> bool:
     return player1_name.upper() and player2_name.upper() in authorized_players
+
 
 def create_deck(deck, number_of_cards) -> deck:
     existing_cards = set()
@@ -45,9 +47,14 @@ def create_deck(deck, number_of_cards) -> deck:
             deck.append(new_card)
     return deck
 
-def get_card_from_deck(deck, player) -> None:
+
+def get_card_from_deck(deck, player1, player2) -> None:
     removed_card = deck.pop(0)
-    player["cards"].append(removed_card)
+    player1["cards"].append(removed_card)
+
+    second_removed_card = deck.pop(0)
+    player2["cards"].append(second_removed_card)
+
 
 def calculate_winner(player1, player2) -> player:
     # card from deck was APPENDED -> use -1 to get last element
@@ -65,19 +72,21 @@ def calculate_winner(player1, player2) -> player:
     # return player who's card has a greater number if colors are equal
     return player2 if player2_card_number > player1_card_number else player1
 
+
 def give_winner_cards(winner, loser) -> None:
     losing_card = loser["cards"].pop()
     winner["cards"].append(losing_card)
 
+
 def normal_game():
     pass
+
 
 def main():
     pass
 
+
 if __name__ == "__main__":
     main()
 
-print("Commit test")
-print("Commit test 2")
     

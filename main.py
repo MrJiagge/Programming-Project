@@ -64,4 +64,6 @@ def calculate_winner(player1, player2) -> player:
         return player2 if (player1_card_color == "red" and player2_card_color == "yellow") or (player1_card_color == "yellow" and player2_card_color == "black") else player1
     # return player who's card has a greater number if colors are equal
     return player2 if player2_card_number > player1_card_number else player1
+
+print("Commit test")
     

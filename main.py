@@ -65,6 +65,10 @@ def calculate_winner(player1, player2) -> player:
     # return player who's card has a greater number if colors are equal
     return player2 if player2_card_number > player1_card_number else player1
 
+def give_winner_cards(winner, loser) -> None:
+    losing_card = loser["cards"].pop()
+    winner["cards"].append(losing_card)
+
 def normal_game():
     pass
 

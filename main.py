@@ -82,8 +82,9 @@ def normal_game():
     player1_name = player_1["name"]
     player2_name = player_2["name"]
 
-    load_authorized_players("Programmig-Project/main.py")
-    check_players(player1_name, player2_name)
+    load_authorized_players("Programming-Project/main.py")
+    if not check_players(player1_name, player2_name):
+        print(f'Sorry either {player1_name}, or {player2_name}, or even both of you are not authorized to play🚫')
 
     create_deck(deck_of_cards, NUMBER_OF_CARDS_IN_DECK)
     while len(deck) > 0:
@@ -97,7 +98,7 @@ def normal_game():
 
 
 def main():
-    pass
+    normal_game()
 
 
 if __name__ == "__main__":

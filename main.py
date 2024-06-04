@@ -65,6 +65,15 @@ def calculate_winner(player1, player2) -> player:
     # return player who's card has a greater number if colors are equal
     return player2 if player2_card_number > player1_card_number else player1
 
+def normal_game():
+    pass
+
+def main():
+    pass
+
+if __name__ == "__main__":
+    main()
+
 print("Commit test")
 print("Commit test 2")
     

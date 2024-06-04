@@ -66,4 +66,5 @@ def calculate_winner(player1, player2) -> player:
     return player2 if player2_card_number > player1_card_number else player1
 
 print("Commit test")
+print("Commit test 2")
     

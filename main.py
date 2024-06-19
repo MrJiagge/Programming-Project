@@ -111,6 +111,10 @@ def normal_game() -> None:
         return
 
     deck_of_cards = create_deck(NUMBER_OF_CARDS_IN_DECK)
+    """"
+    When deck_of_cards is empty, it will evaluate to False.
+    While loop only runs while it is true.
+    """
     while deck_of_cards:
         get_cards_from_deck(deck_of_cards, player_1, player_2)
         winner = calculate_winner(player_1, player_2)

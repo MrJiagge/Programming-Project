@@ -2,10 +2,9 @@
 from random import randint, choice
 from time import sleep as wait
 from json import load, dump
-
-# ---------- Type Aliases ----------
 from typing import Dict, List, Tuple
 
+# ---------- Type Aliases ----------
 Player = Dict[str, List[Tuple[int, str]]]
 Card = Tuple[int, str]
 Deck = List[Card]
@@ -76,7 +75,7 @@ def calculate_winner(player1: Player, player2: Player) -> Player:
     
     if player1_card_color != player2_card_color:
         """
-        The IF statement contains all possible ways player2 can win
+        The IF statement contains all possible ways player_2 can win
         """
         if (player1_card_color == "red" and player2_card_color == "yellow") or \
            (player1_card_color == "yellow" and player2_card_color == "black"):
@@ -84,7 +83,10 @@ def calculate_winner(player1: Player, player2: Player) -> Player:
         else:
             return player1
     else:
-        # return player who's card has a greater number if colors are equal
+        """"
+        If both card colors are the same, return the player who's card number
+        is the greatest.
+        """
         return player2 if player2_card_number > player1_card_number else player1
 
 def give_winner_cards(winner: Player, loser: Player) -> None:
@@ -112,7 +114,11 @@ def normal_game() -> None:
     while deck_of_cards:
         get_cards_from_deck(deck_of_cards, player_1, player_2)
         winner = calculate_winner(player_1, player_2)
-        # player1 is the loser only if player2 is the winner, otherwise player2 is the loser
+        """"
+        The player who is the loser in this parameter is always player_1
+        if the winner is player_2. Otherwise, player_2 is the loser as they are
+        not the winner.
+        """
         give_winner_cards(winner, player_1 if winner == player_2 else player_2)
     
     print(f'{player1_name.capitalize()} had these cards: {player_1["cards"]}')
@@ -132,4 +138,3 @@ def main() -> None:
 if __name__ == "__main__":
     main()
 
-print("Localizing test")

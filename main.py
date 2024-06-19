@@ -128,6 +128,10 @@ def normal_game() -> None:
     wait(2)
     print(f'{player2_name.capitalize()} had these cards: {player_2["cards"]}')
     print(f'Overall, he had {len(player_2["cards"])} cards!')
+    
+    
+def slow_game() -> None:
+    pass
 
 def main() -> None:
     """

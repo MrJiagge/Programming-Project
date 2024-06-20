@@ -1,26 +1,49 @@
 # ---------- Imports ----------
 from random import randint, choice
 from time import sleep as wait
-from json import load, dump
-from typing import List, Tuple, Dict
-
-# ---------- Type Aliases ----------
-Card = Tuple[int, str]
-Deck = List[Card]
+from json import load
+from typing import List
 
 # ---------- Constants ----------
 NUMBER_OF_CARDS_IN_DECK = 30
 COLORS = ["yellow", "red", "black"]
 
 # ---------- Classes ----------
+class Card:
+    def __init__(self, number: int, color: str):
+        self.number = number
+        self.color = color
+    """
+    String representation of a card.
+    """
+    def __repr__(self):
+        return f'Card: {self.number}, {self.color}'
+    
+    """
+    Determines if cards are the same based on number and color.
+    """
+    def __eq__(self, other: 'Card') -> bool:
+        if isinstance(other, Card):
+            return self.number == other.number and self.color == other.color
+
+    """
+    Calculates the unique hash value of the card based on number and color.
+    """
+    def __hash__(self) -> int:
+        return hash((self.number, self.color))
+
 class Player:
     def __init__(self, name: str):
         self.name = name
-        self.cards: Deck = []
+        self.cards: List[Card] = []
 
     def add_card(self, card: Card) -> None:
         self.cards.append(card)
 
+    """
+    Removes the last card which is the card appended from the deck.
+    Called when the card loses to another card.
+    """
     def remove_card(self) -> Card:
         return self.cards.pop()
 
@@ -38,17 +61,17 @@ class AuthorizedPlayers:
 
 class Deck:
     def __init__(self):
-        self.cards: Deck = self.create_deck()
+        self.cards: List[Card] = self.create_deck()
 
-    def create_deck(self) -> Deck:
-        deck: Deck = []
+    def create_deck(self) -> List[Card]:
+        deck: List[Card] = []
         existing_cards = set()
         while len(deck) < NUMBER_OF_CARDS_IN_DECK:
             number = randint(1, 10)
             color = choice(COLORS)
-            new_card = (number, color)
-            if new_card not in existing_cards:
-                existing_cards.add(new_card)
+            new_card = Card(number, color)
+            if (number, color) not in existing_cards:
+                existing_cards.add((number, color))
                 deck.append(new_card)
         return deck
 
@@ -68,16 +91,16 @@ class Game:
         player2.add_card(self.deck.draw_card())
 
     def calculate_winner(self, player1: Player, player2: Player) -> Player:
-        player1_card_number, player1_card_color = player1.cards[-1]
-        player2_card_number, player2_card_color = player2.cards[-1]
-        if player1_card_color != player2_card_color:
-            if (player1_card_color == "red" and player2_card_color == "yellow") or \
-               (player1_card_color == "yellow" and player2_card_color == "black"):
+        player1_card = player1.cards[-1]
+        player2_card = player2.cards[-1]
+        if player1_card.color != player2_card.color:
+            if (player1_card.color == "red" and player2_card.color == "yellow") or \
+               (player1_card.color == "yellow" and player2_card.color == "black"):
                 return player2
             else:
                 return player1
         else:
-            return player2 if player2_card_number > player1_card_number else player1
+            return player2 if player2_card.number > player1_card.number else player1
 
     def give_winner_cards(self, winner: Player, loser: Player) -> None:
         winner.add_card(loser.remove_card())
@@ -97,11 +120,11 @@ class NormalGame(Game):
 
     def display_results(self, player1: Player, player2: Player) -> None:
         print(f'{player1.name.capitalize()} had these cards: {player1.cards}')
-        print(f'Overall, he had {len(player1.cards)} cards!')
+        print(f'Overall, they had {len(player1.cards)} cards!')
         print('-----------------------------------------------------------------------')
         wait(2)
         print(f'{player2.name.capitalize()} had these cards: {player2.cards}')
-        print(f'Overall, he had {len(player2.cards)} cards!')
+        print(f'Overall, they had {len(player2.cards)} cards!')
 
 class SlowGame(Game):
     def play(self, player1: Player, player2: Player) -> None:

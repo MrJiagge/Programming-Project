@@ -67,9 +67,8 @@ def get_cards_from_deck(deck: Deck, player1: Player, player2: Player) -> None:
 def calculate_winner(player1: Player, player2: Player) -> Player:
     """
     Determine the winner between two players based on the last card drawn.
-    The card was appended therefore -1 index gets the last element.
     """
-    
+    #The card was appended therefore -1 index gets the last element.
     player1_card_number, player1_card_color = player1["cards"][-1]
     player2_card_number, player2_card_color = player2["cards"][-1]
     
@@ -95,11 +94,10 @@ def give_winner_cards(winner: Player, loser: Player) -> None:
     """
     winner["cards"].append(loser["cards"].pop())
 
-def normal_game() -> None:
+def fast_game() -> None:
     """
-    Conduct the normal game flow: load players, create deck, distribute cards, 
-    determine the winner, and print final card holdings of each player. This is
-    the faster game.
+    The fast game flow: load players, create deck, distribute cards, 
+    determine the winner, and print final card holdings of each player.
     """
     global deck_of_cards
     player1_name = player_1["name"]
@@ -113,7 +111,7 @@ def normal_game() -> None:
     deck_of_cards = create_deck(NUMBER_OF_CARDS_IN_DECK)
     """"
     When deck_of_cards is empty, it will evaluate to False.
-    While loop only runs while it is true.
+    While loop only runs while the deck has cards left.
     """
     while deck_of_cards:
         get_cards_from_deck(deck_of_cards, player_1, player_2)
@@ -127,21 +125,81 @@ def normal_game() -> None:
     
     print(f'{player1_name.capitalize()} had these cards: {player_1["cards"]}')
     print(f'Overall, he had {len(player_1["cards"])} cards!')
-    print('-----------------------------------------------------------------------')
+    print('------------------------------------------------------------------------------------------------------')
     
     wait(2)
     print(f'{player2_name.capitalize()} had these cards: {player_2["cards"]}')
     print(f'Overall, he had {len(player_2["cards"])} cards!')
     
     
-def slow_game() -> None:
-    pass
+def normal_game() -> None:
+    """
+    The normal game flow: load players, create deck, both players draw cards,
+    calculates the winning card, prints final card holdings.
+    """
+    global deck_of_cards
+    player1_name = player_1["name"]
+    player2_name = player_2["name"]
+
+    authorized_players.extend(load_authorized_players("authorized_players.json"))
+    if not check_players(player1_name, player2_name, authorized_players):
+        print(f'Sorry, either {player1_name} or {player2_name}, or both of you are not authorized to play 🚫')
+        return
+
+    deck_of_cards = create_deck(NUMBER_OF_CARDS_IN_DECK)
+    
+    """"
+    When deck_of_cards is empty, it will evaluate to False.
+    While loop only runs while the deck has cards left.
+    """
+    while deck_of_cards:
+        get_cards_from_deck(deck_of_cards, player_1, player_2)
+        player1_card = player_1["cards"][-1]
+        player2_card = player_2["cards"][-1]
+        
+        winner = calculate_winner(player_1, player_2)
+        
+        print(f'{player1_name.capitalize()} draws card: {player1_card}')
+        wait(2.5)
+        print(f'{player2_name.capitalize()} draws card: {player2_card}')
+        wait(2.5)
+        print(f'{winner["name"].capitalize()} is the winner of this round.')
+        print('---------------------------------------------------------------------------------------')
+        
+        """"
+        The player who is the loser in this parameter is always player_1
+        if the winner is player_2. Otherwise, player_2 is the loser as they are
+        not the winner.
+        """
+        give_winner_cards(winner, player_1 if winner == player_2 else player_2)
+    
+    wait(5)
+    print(f'{player1_name.capitalize()} had these cards: {player_1["cards"]}')
+    print(f'Overall, he had {len(player_1["cards"])} cards!')
+    print('------------------------------------------------------------------------------------------------------')
+    
+    wait(3)
+    print(f'{player2_name.capitalize()} had these cards: {player_2["cards"]}')
+    print(f'Overall, he had {len(player_2["cards"])} cards!')
+    print('------------------------------------------------------------------------------------------------------')
+    
+    wait(3)
+    print(f'{winner["name"].capitalize()} is the winner of this game!🏆🎖️')
+    
+    loser = player_1 if winner == player_2 else player_2
+    
+    wait(2)
+    print(f'Better luck next time, {loser["name"].capitalize()}!😆')
+    
 
 def main() -> None:
-    """
-    Entry point for the game.
-    """
-    normal_game()
+    game_chosen = input(f'Choose a game (normal/fast): ')
+    if game_chosen == "normal".lower():
+        normal_game()
+    elif game_chosen == "fast".lower():
+        fast_game()
+    else:
+        print(f'I dont think that "{game_chosen}" was one of the options mate...🤡')
 
 if __name__ == "__main__":
     main()

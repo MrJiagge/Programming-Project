@@ -194,7 +194,6 @@ def main() -> None:
         winner = normal_game()
     elif game_chosen == "fast".lower():
         winner = fast_game()
-        print(winner)
     else:
         print(f'I dont think that "{game_chosen}" was one of the options mate...🤡')
 
